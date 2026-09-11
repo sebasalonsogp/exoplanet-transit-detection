@@ -23,7 +23,12 @@ from transit_lab.charts import (
 )
 from transit_lab.presentation import build_candidate_evidence
 
-PLOTLY_CONFIG = {"displaylogo": False, "displayModeBar": False, "scrollZoom": False}
+PLOTLY_CONFIG = {
+    "displaylogo": False,
+    "displayModeBar": False,
+    "responsive": True,
+    "scrollZoom": False,
+}
 
 st.set_page_config(
     page_title="Transit Lab",
@@ -32,7 +37,7 @@ st.set_page_config(
 )
 
 
-@st.cache_data(show_spinner="Running the reproducible transit search…", max_entries=1)
+@st.cache_data(show_spinner=False, max_entries=1)
 def load_analysis() -> tuple[
     TransitDataset,
     PreparedSignals,
@@ -61,7 +66,8 @@ st.markdown(
 )
 
 try:
-    dataset, prepared, result, comparisons = load_analysis()
+    with st.skeleton(height=112):
+        dataset, prepared, result, comparisons = load_analysis()
 except (DataValidationError, ValueError) as error:
     st.error(
         "Transit Lab could not load the bundled analysis. "
@@ -75,18 +81,21 @@ target = dataset.target
 best = result.best_candidate
 reference_difference_minutes = abs(best.period_days - target.reference_period_days) * 24 * 60
 
-with st.container(horizontal=True, vertical_alignment="center"):
+with st.container(horizontal=True, vertical_alignment="center", wrap=True):
     st.badge("Offline and reproducible", icon=":material/database:", color="blue")
     st.caption(f"{target.mission} Sector {target.sector} · {target.toi} · 120-second cadence")
 
-with st.container(horizontal=True):
+summary_columns = st.columns(4, gap="small")
+with summary_columns[0]:
     st.metric("Target", target.planet_name, icon=":material/planet:", border=True)
+with summary_columns[1]:
     st.metric(
         "Observations",
         f"{dataset.light_curve.observation_count:,}",
         icon=":material/scatter_plot:",
         border=True,
     )
+with summary_columns[2]:
     st.metric(
         "Best BLS period",
         f"{best.period_days:.5f} days",
@@ -94,6 +103,7 @@ with st.container(horizontal=True):
         icon=":material/timeline:",
         border=True,
     )
+with summary_columns[3]:
     st.metric(
         "Best-candidate S/N",
         f"{best.depth_signal_to_noise:.1f}",
@@ -191,17 +201,20 @@ st.write(
     "The notebook's Fourier and SVD-assisted approaches sit beside Box Least Squares on one "
     "normalized score scale. Each curve comes from the same versioned TESS observation."
 )
-with st.container(horizontal=True):
+comparison_columns = st.columns(3, gap="small")
+with comparison_columns[0]:
     st.metric(
         "Fourier candidate",
         f"{comparisons['fourier'].candidate_period_days:.5f} days",
         border=True,
     )
+with comparison_columns[1]:
     st.metric(
         "SVD + Fourier candidate",
         f"{comparisons['svd_fourier'].candidate_period_days:.5f} days",
         border=True,
     )
+with comparison_columns[2]:
     st.metric(
         "BLS candidate",
         f"{comparisons['bls'].candidate_period_days:.5f} days",
@@ -221,7 +234,7 @@ method_label = st.segmented_control(
 if method_label is None:
     st.stop()
 selected_comparison = method_by_label[method_label]
-with st.container(horizontal=True, vertical_alignment="center"):
+with st.container(horizontal=True, vertical_alignment="center", wrap=True):
     if selected_comparison.recommended:
         st.badge("Recommended for transit-shaped dips", color="green")
     else:
@@ -304,7 +317,8 @@ st.write(
     "The selected peak's measurements stay synchronized with the fold. Definitions and "
     "provenance are included so the numbers remain auditable."
 )
-with st.container(horizontal=True):
+evidence_columns = st.columns(4, gap="small")
+with evidence_columns[0]:
     st.metric(
         "Selected period",
         evidence.period,
@@ -313,18 +327,21 @@ with st.container(horizontal=True):
         help="Selected local maximum from the normalized-flux BLS period search.",
         border=True,
     )
+with evidence_columns[1]:
     st.metric(
         "Approximate depth",
         evidence.depth,
         help="BLS box-model depth from the normalized light curve; an approximate estimate.",
         border=True,
     )
+with evidence_columns[2]:
     st.metric(
         "Model duration",
         evidence.duration,
         help="The fixed 0.1-day duration supplied to BLS, not an independent duration fit.",
         border=True,
     )
+with evidence_columns[3]:
     st.metric(
         "Depth signal-to-noise",
         evidence.depth_signal_to_noise,
