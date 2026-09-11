@@ -223,8 +223,8 @@ candidate, and phase-folded transit without requiring visitor configuration.
 
 - [x] Full test, lint, and type-check suite passes.
 - [x] A fresh clone can reproduce the BLS result from bundled data.
-- [ ] A visitor can understand the target, candidate period, and folded transit in two minutes.
-- [ ] Human review before adding method comparisons.
+- [x] A visitor can understand the target, candidate period, and folded transit in two minutes.
+- [x] Human review before adding method comparisons.
 
 ## Phase 2: Preparation and method-comparison story
 
