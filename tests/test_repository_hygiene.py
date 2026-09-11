@@ -10,6 +10,10 @@ ABSOLUTE_LOCAL_PATH = re.compile(
     r"(?:\b[A-Za-z]:[\\/]|/(?:Users|home)/[^/\s]+/)",
     flags=re.IGNORECASE,
 )
+PUBLIC_TEXT_SUFFIXES = frozenset(
+    {".ipynb", ".json", ".md", ".py", ".toml", ".txt", ".yaml", ".yml"}
+)
+IGNORED_DIRECTORIES = frozenset({".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv"})
 
 
 def _walk_strings(value: Any) -> Iterator[str]:
@@ -34,6 +38,23 @@ def test_notebook_contains_no_absolute_local_paths() -> None:
     matches = [text for text in _walk_strings(notebook) if ABSOLUTE_LOCAL_PATH.search(text)]
 
     assert not matches, "notebook contains machine-specific absolute paths"
+
+
+def test_repository_contains_no_machine_specific_paths() -> None:
+    text_files = (
+        path
+        for path in REPOSITORY_ROOT.rglob("*")
+        if path.is_file()
+        and path.suffix.lower() in PUBLIC_TEXT_SUFFIXES
+        and not IGNORED_DIRECTORIES.intersection(path.relative_to(REPOSITORY_ROOT).parts)
+    )
+    matches = [
+        str(path.relative_to(REPOSITORY_ROOT))
+        for path in text_files
+        if ABSOLUTE_LOCAL_PATH.search(path.read_text(encoding="utf-8"))
+    ]
+
+    assert not matches, f"repository contains machine-specific paths: {matches}"
 
 
 def test_notebook_contains_no_saved_execution_state() -> None:
