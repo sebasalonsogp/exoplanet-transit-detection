@@ -11,9 +11,9 @@ only when its acceptance criteria and verification steps in the plan have passed
 ### Checkpoint A: Clean and trustworthy source
 
 - [x] Notebook hygiene test passes.
-- [ ] Data provenance and reference values have been reviewed.
+- [x] Data provenance and reference values have been reviewed.
 - [x] No runtime network request or local machine path is required.
-- [ ] Human review before Phase 1.
+- [x] Human review before Phase 1.
 
 ## Phase 1: First end-to-end analytical slice
 
