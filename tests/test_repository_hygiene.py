@@ -10,6 +10,15 @@ ABSOLUTE_LOCAL_PATH = re.compile(
     r"(?:\b[A-Za-z]:[\\/]|/(?:Users|home)/[^/\s]+/)",
     flags=re.IGNORECASE,
 )
+LIKELY_CREDENTIAL = re.compile(
+    r"(?:"
+    r"ghp_[A-Za-z0-9]{30,}|"
+    r"github_pat_[A-Za-z0-9_]{50,}|"
+    r"sk-(?:proj-)?[A-Za-z0-9_-]{20,}|"
+    r"AKIA[0-9A-Z]{16}|"
+    r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"
+    r")"
+)
 PUBLIC_TEXT_SUFFIXES = frozenset(
     {".ipynb", ".json", ".md", ".py", ".toml", ".txt", ".yaml", ".yml"}
 )
@@ -32,6 +41,16 @@ def _load_notebook() -> dict[str, Any]:
     return json.loads(NOTEBOOK_PATH.read_text(encoding="utf-8"))
 
 
+def _public_text_files() -> Iterator[Path]:
+    return (
+        path
+        for path in REPOSITORY_ROOT.rglob("*")
+        if path.is_file()
+        and path.suffix.lower() in PUBLIC_TEXT_SUFFIXES
+        and not IGNORED_DIRECTORIES.intersection(path.relative_to(REPOSITORY_ROOT).parts)
+    )
+
+
 def test_notebook_contains_no_absolute_local_paths() -> None:
     notebook = _load_notebook()
 
@@ -41,20 +60,23 @@ def test_notebook_contains_no_absolute_local_paths() -> None:
 
 
 def test_repository_contains_no_machine_specific_paths() -> None:
-    text_files = (
-        path
-        for path in REPOSITORY_ROOT.rglob("*")
-        if path.is_file()
-        and path.suffix.lower() in PUBLIC_TEXT_SUFFIXES
-        and not IGNORED_DIRECTORIES.intersection(path.relative_to(REPOSITORY_ROOT).parts)
-    )
     matches = [
         str(path.relative_to(REPOSITORY_ROOT))
-        for path in text_files
+        for path in _public_text_files()
         if ABSOLUTE_LOCAL_PATH.search(path.read_text(encoding="utf-8"))
     ]
 
     assert not matches, f"repository contains machine-specific paths: {matches}"
+
+
+def test_repository_contains_no_likely_credentials() -> None:
+    matches = [
+        str(path.relative_to(REPOSITORY_ROOT))
+        for path in _public_text_files()
+        if LIKELY_CREDENTIAL.search(path.read_text(encoding="utf-8"))
+    ]
+
+    assert not matches, f"repository contains likely credentials: {matches}"
 
 
 def test_notebook_contains_no_saved_execution_state() -> None:

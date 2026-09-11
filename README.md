@@ -7,6 +7,16 @@ method comparison, period search, phase folding, and evidence interpretation.
 
 ![Transit Lab dashboard showing the KOI-13 b summary and TESS light curve](docs/assets/dashboard-preview.png)
 
+## Project origin
+
+Transit Lab builds on a mini-project completed for **MTH 520**. The original class work
+explored several signal-processing approaches for identifying periodic transit-shaped dips
+in stellar light curves. This portfolio version preserves that analytical foundation while
+expanding it into a reproducible application with typed data contracts, bounded interaction,
+purpose-built visualizations, automated tests, continuous integration, and documented
+scientific limitations. It is an engineering-focused repackaging of the course project, not
+a claim of new astronomical research.
+
 ## Result
 
 Transit Lab recovers a strongest Box Least Squares (BLS) period of **1.76299 days** for
