@@ -24,7 +24,7 @@ only when its acceptance criteria and verification steps in the plan have passed
 ### Checkpoint B: Analytical proof
 
 - [x] Full test, lint, and type-check suite passes.
-- [ ] A fresh clone can reproduce the BLS result from bundled data.
+- [x] A fresh clone can reproduce the BLS result from bundled data.
 - [ ] A visitor can understand the target, candidate period, and folded transit in two minutes.
 - [ ] Human review before method comparisons.
 

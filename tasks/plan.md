@@ -222,7 +222,7 @@ candidate, and phase-folded transit without requiring visitor configuration.
 ### Checkpoint B: Analytical proof
 
 - [x] Full test, lint, and type-check suite passes.
-- [ ] A fresh clone can reproduce the BLS result from bundled data.
+- [x] A fresh clone can reproduce the BLS result from bundled data.
 - [ ] A visitor can understand the target, candidate period, and folded transit in two minutes.
 - [ ] Human review before adding method comparisons.
 
