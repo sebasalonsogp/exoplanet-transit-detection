@@ -22,6 +22,9 @@ the notebook's TOI and KOI labels therefore refer to the same target rather than
   simple aperture photometry (SAP) flux, its uncertainty, and median-normalized equivalents.
 - `demo/target.json` records identifiers, observation context, column definitions, processing
   steps, checksums, reference values, queries, and source URLs.
+- `demo/method_results.json` stores deterministic Fourier and SVD-assisted period scores
+  regenerated from the bundled curve. Keeping this compact artifact in version control makes
+  the dashboard fast and reproducible without rerunning the notebook on every page load.
 
 `time_btjd` uses BTJD, defined as BJD minus 2,457,000 days. Raw flux values are electrons per
 second. `normalized_flux` is dimensionless and has a median of one.
@@ -38,6 +41,29 @@ The CSV was exported once with Lightkurve 2.6.0 using the same core path as the 
 
 No detrending or period search is baked into the dataset. Those transformations belong to the
 tested analysis layer so the application can show their effects explicitly.
+
+## Notebook-method comparison
+
+Phase 2 repackages two exploratory methods from `assets/astro.ipynb` rather than introducing
+new scientific analysis. Both use the app's Savitzky-Golay-detrended normalized flux and the
+notebook's bounded settings:
+
+- Fourier: real FFT, restricted to candidate periods from 1 to 10 days.
+- SVD-assisted Fourier: overlapping 50-sample windows, rank-6 reconstruction, then a real FFT
+  of the reconstruction residual over the same period range.
+
+The notebook's experimental L1 optimizer is intentionally omitted: it is computationally
+expensive, its notebook outputs were not retained, and reproducing or tuning it would add new
+scientific work outside this portfolio project's scope. Box Least Squares remains the primary
+method because its box-shaped model fits transit-like dips directly.
+
+Regenerate the packaged comparison after changing the preparation pipeline with:
+
+```powershell
+uv run python scripts/generate_method_results.py
+```
+
+The test suite verifies that the packaged values match a fresh computation.
 
 ## Reference values
 
