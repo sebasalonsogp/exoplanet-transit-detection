@@ -9,6 +9,7 @@ from transit_lab import (
     PreparedSignals,
     TransitDataset,
     build_bls_comparison,
+    fold_light_curve,
     load_demo_dataset,
     load_packaged_comparisons,
     prepare_signals,
@@ -20,6 +21,7 @@ from transit_lab.charts import (
     build_method_comparison_chart,
     build_periodogram_chart,
 )
+from transit_lab.presentation import build_candidate_evidence
 
 PLOTLY_CONFIG = {"displaylogo": False, "displayModeBar": False, "scrollZoom": False}
 
@@ -54,7 +56,9 @@ st.markdown(
     "Follow one verified TESS light curve from raw observations to a reproducible "
     "transit-period candidate."
 )
-st.markdown("**Observe** → **Prepare** → **Compare** → **Search** → **Fold**")
+st.markdown(
+    "**Observe** → **Prepare** → **Compare** → **Search** → **Fold** → **Interpret**"
+)
 
 try:
     dataset, prepared, result, comparisons = load_analysis()
@@ -91,7 +95,7 @@ with st.container(horizontal=True):
         border=True,
     )
     st.metric(
-        "Depth signal-to-noise",
+        "Best-candidate S/N",
         f"{best.depth_signal_to_noise:.1f}",
         help="Estimated transit depth divided by its uncertainty.",
         icon=":material/query_stats:",
@@ -131,6 +135,10 @@ preparation_mode = st.segmented_control(
 )
 if preparation_mode == "Raw":
     prepared_curve = prepared.raw
+    preparation_label = "raw"
+    folded_y_axis_title = "SAP flux (electrons/second)"
+    folded_hover_label = "SAP flux"
+    folded_hover_format = ",.0f"
     preparation_explanation = (
         "Raw preserves detector measurements in instrument units before scaling."
     )
@@ -143,6 +151,10 @@ if preparation_mode == "Raw":
     )
 elif preparation_mode == "Normalized":
     prepared_curve = prepared.normalized
+    preparation_label = "normalized"
+    folded_y_axis_title = "Normalized flux"
+    folded_hover_label = "Normalized flux"
+    folded_hover_format = ".6f"
     preparation_explanation = (
         "Normalized divides by the median so the median brightness equals one."
     )
@@ -152,6 +164,10 @@ elif preparation_mode == "Normalized":
     )
 else:
     prepared_curve = prepared.detrended
+    preparation_label = "detrended"
+    folded_y_axis_title = "Detrended normalized flux"
+    folded_hover_label = "Detrended flux"
+    folded_hover_format = ".6f"
     preparation_explanation = (
         "Detrended divides out slow baseline changes using the notebook's local "
         "Savitzky–Golay settings."
@@ -239,16 +255,92 @@ st.caption(
     f"difference: {reference_difference_minutes:.1f} minutes"
 )
 
-st.header("5. Fold the strongest candidate", icon=":material/repeat:")
+st.header("5. Fold a candidate", icon=":material/repeat:")
 st.write(
-    "Folding stacks every candidate orbit onto the same phase axis. The repeated dip near "
-    "phase zero becomes clear in the amber median, while the individual measurements "
-    "remain visible."
+    "Choose one of the three ranked BLS peaks. The chart folds the preparation selected "
+    "above, making the consequences of both choices visible without rerunning the search."
+)
+candidate_by_label = {
+    f"#{rank} · {candidate.period_days:.5f} d": (rank, candidate)
+    for rank, candidate in enumerate(result.candidates, start=1)
+}
+candidate_label = st.segmented_control(
+    "Candidate period",
+    options=list(candidate_by_label),
+    default=next(iter(candidate_by_label)),
+    key="candidate-period",
+    selection_mode="single",
+    required=True,
+    width="stretch",
+)
+if candidate_label is None:
+    st.stop()
+selected_rank, selected_candidate = candidate_by_label[candidate_label]
+selected_fold = fold_light_curve(prepared_curve, selected_candidate)
+st.caption(
+    f"Candidate #{selected_rank} · {selected_candidate.period_days:.5f} days · "
+    f"{preparation_label} signal"
 )
 st.plotly_chart(
-    build_folded_chart(result.folded_signal),
+    build_folded_chart(
+        selected_fold,
+        trace_name=f"Folded {preparation_label} observations",
+        y_axis_title=folded_y_axis_title,
+        hover_flux_label=folded_hover_label,
+        hover_flux_format=folded_hover_format,
+    ),
     key="folded-chart",
     config=PLOTLY_CONFIG,
+)
+
+evidence = build_candidate_evidence(
+    selected_candidate,
+    reference_period_days=target.reference_period_days,
+    rank=selected_rank,
+)
+st.header("6. Interpret the evidence", icon=":material/fact_check:")
+st.write(
+    "The selected peak's measurements stay synchronized with the fold. Definitions and "
+    "provenance are included so the numbers remain auditable."
+)
+with st.container(horizontal=True):
+    st.metric(
+        "Selected period",
+        evidence.period,
+        delta=evidence.reference_offset,
+        delta_color="off",
+        help="Selected local maximum from the normalized-flux BLS period search.",
+        border=True,
+    )
+    st.metric(
+        "Approximate depth",
+        evidence.depth,
+        help="BLS box-model depth from the normalized light curve; an approximate estimate.",
+        border=True,
+    )
+    st.metric(
+        "Model duration",
+        evidence.duration,
+        help="The fixed 0.1-day duration supplied to BLS, not an independent duration fit.",
+        border=True,
+    )
+    st.metric(
+        "Depth signal-to-noise",
+        evidence.depth_signal_to_noise,
+        help="Estimated transit depth divided by its uncertainty; dimensionless.",
+        border=True,
+    )
+st.info(evidence.interpretation, icon=":material/insights:")
+st.warning(
+    "A repeating transit-shaped dip is evidence, but this dashboard does not confirm a "
+    "planet or rule out false positives. The external catalog supplies that confirmation.",
+    icon=":material/warning:",
+)
+st.markdown(
+    "**Provenance:** Candidate values are computed locally with Astropy BLS on the normalized "
+    "TESS curve. The reference period comes from the "
+    "[NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/overview/KOI-13). "
+    "Changing preparation alters the displayed samples, not the period-search result."
 )
 
 with st.expander("Under the hood", icon=":material/code:"):
@@ -259,6 +351,6 @@ with st.expander("Under the hood", icon=":material/code:"):
     )
     st.caption(
         "The BLS search evaluates 6,489 trial periods between 1 and 10 days and ranks distinct "
-        "local peaks. BLS identifies a repeating transit-shaped signal; the external catalog "
-        "provides the planet confirmation."
+        "local peaks. One bounded cache entry holds the dataset and expensive analysis; "
+        "candidate and preparation changes only repeat the inexpensive fold and formatting."
     )
