@@ -88,19 +88,6 @@ class BLSResult:
 
         return self.candidates[0]
 
-    @property
-    def folded_phase(self) -> NDArray[np.float64]:
-        """Return the best candidate's folded phase for compatibility."""
-
-        return self.folded_signal.phase
-
-    @property
-    def folded_flux(self) -> NDArray[np.float64]:
-        """Return the best candidate's phase-ordered flux for compatibility."""
-
-        return self.folded_signal.flux
-
-
 def normalize_light_curve(curve: LightCurve) -> LightCurve:
     """Scale a flux series and its uncertainty by the median flux."""
 

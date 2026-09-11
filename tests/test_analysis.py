@@ -106,11 +106,13 @@ def test_bls_returns_aligned_periodogram_and_folded_samples() -> None:
     assert result.period_days.size > 1_000
     assert result.period_days.min() >= BLSConfig().minimum_period_days
     assert result.period_days.max() <= BLSConfig().maximum_period_days
-    assert result.folded_phase.size == dataset.light_curve.observation_count
-    assert result.folded_flux.size == dataset.light_curve.observation_count
+    assert result.folded_signal.phase.size == dataset.light_curve.observation_count
+    assert result.folded_signal.flux.size == dataset.light_curve.observation_count
     assert np.all(np.isfinite(result.power))
-    assert np.all((-0.5 <= result.folded_phase) & (result.folded_phase < 0.5))
-    assert np.all(np.diff(result.folded_phase) >= 0)
+    assert np.all(
+        (-0.5 <= result.folded_signal.phase) & (result.folded_signal.phase < 0.5)
+    )
+    assert np.all(np.diff(result.folded_signal.phase) >= 0)
 
 
 def test_bls_returns_ranked_distinct_candidates() -> None:
