@@ -1,6 +1,6 @@
 import numpy as np
 
-from transit_lab.analysis import BLSConfig, prepare_signals, run_bls
+from transit_lab.analysis import BLSConfig, fold_light_curve, prepare_signals, run_bls
 from transit_lab.charts import (
     build_folded_chart,
     build_light_curve_chart,
@@ -64,7 +64,7 @@ def test_folded_chart_layers_observations_and_binned_median() -> None:
     dataset = load_demo_dataset()
     result = run_bls(dataset.light_curve)
 
-    figure = build_folded_chart(result)
+    figure = build_folded_chart(result.folded_signal)
 
     assert [trace.name for trace in figure.data] == ["Folded observations", "Binned median"]
     assert len(figure.data[0].x) == dataset.light_curve.observation_count
@@ -72,6 +72,24 @@ def test_folded_chart_layers_observations_and_binned_median() -> None:
     assert np.min(figure.data[0].x) >= -0.5
     assert np.max(figure.data[0].x) < 0.5
     assert figure.layout.xaxis.title.text == "Orbital phase"
+
+
+def test_folded_chart_supports_the_selected_signal_labels() -> None:
+    dataset = load_demo_dataset()
+    result = run_bls(dataset.light_curve)
+    folded = fold_light_curve(dataset.raw_light_curve, result.candidates[1])
+
+    figure = build_folded_chart(
+        folded,
+        trace_name="Folded raw observations",
+        y_axis_title="SAP flux (electrons/second)",
+        hover_flux_label="SAP flux",
+        hover_flux_format=",.0f",
+    )
+
+    assert figure.data[0].name == "Folded raw observations"
+    assert figure.layout.yaxis.title.text == "SAP flux (electrons/second)"
+    assert "SAP flux %{y:,.0f}" in figure.data[0].hovertemplate
 
 
 def test_method_comparison_chart_uses_a_normalized_score_contract() -> None:
@@ -106,7 +124,7 @@ def test_charts_preserve_hover_without_allowing_accidental_navigation() -> None:
             dataset.target.reference_period_days,
         ),
         build_periodogram_chart(result, dataset.target.reference_period_days),
-        build_folded_chart(result),
+        build_folded_chart(result.folded_signal),
     ]
 
     for figure in figures:

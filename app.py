@@ -246,7 +246,7 @@ st.write(
     "remain visible."
 )
 st.plotly_chart(
-    build_folded_chart(result),
+    build_folded_chart(result.folded_signal),
     key="folded-chart",
     config=PLOTLY_CONFIG,
 )

@@ -4,7 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 from numpy.typing import NDArray
 
-from transit_lab.analysis import BLSResult
+from transit_lab.analysis import BLSResult, FoldedSignal
 from transit_lab.comparisons import MethodComparison
 from transit_lab.models import LightCurve
 
@@ -169,19 +169,29 @@ def _bin_folded_curve(
     return centers[populated], medians[populated]
 
 
-def build_folded_chart(result: BLSResult) -> go.Figure:
-    """Plot observations folded around the best candidate's transit center."""
+def build_folded_chart(
+    folded: FoldedSignal,
+    *,
+    trace_name: str = "Folded observations",
+    y_axis_title: str = "Normalized flux",
+    hover_flux_label: str = "Normalized flux",
+    hover_flux_format: str = ".6f",
+) -> go.Figure:
+    """Plot observations folded around a selected candidate's transit center."""
 
-    binned_phase, binned_flux = _bin_folded_curve(result.folded_phase, result.folded_flux)
+    binned_phase, binned_flux = _bin_folded_curve(folded.phase, folded.flux)
     figure = go.Figure()
     figure.add_trace(
         go.Scattergl(
-            x=result.folded_phase,
-            y=result.folded_flux,
+            x=folded.phase,
+            y=folded.flux,
             mode="markers",
-            name="Folded observations",
+            name=trace_name,
             marker={"color": SIGNAL_COLOR, "size": 3, "opacity": 0.25},
-            hovertemplate="Phase %{x:.4f}<br>Normalized flux %{y:.6f}<extra></extra>",
+            hovertemplate=(
+                f"Phase %{{x:.4f}}<br>{hover_flux_label} "
+                f"%{{y:{hover_flux_format}}}<extra></extra>"
+            ),
         )
     )
     figure.add_trace(
@@ -196,5 +206,5 @@ def build_folded_chart(result: BLSResult) -> go.Figure:
         )
     )
     figure.update_xaxes(title="Orbital phase", range=[-0.5, 0.5])
-    figure.update_yaxes(title="Normalized flux")
+    figure.update_yaxes(title=y_axis_title)
     return _apply_layout(figure)

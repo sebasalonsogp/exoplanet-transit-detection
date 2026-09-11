@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 import numpy as np
 import pytest
 
@@ -5,6 +7,7 @@ from transit_lab.analysis import (
     BLSConfig,
     DetrendConfig,
     detrend_light_curve,
+    fold_light_curve,
     normalize_light_curve,
     prepare_signals,
     run_bls,
@@ -125,6 +128,31 @@ def test_bls_returns_ranked_distinct_candidates() -> None:
         for index, period in enumerate(periods)
         for earlier in periods[:index]
     )
+
+
+def test_every_ranked_candidate_can_fold_the_same_curve() -> None:
+    dataset = load_demo_dataset()
+    result = run_bls(dataset.light_curve)
+
+    folded_candidates = [
+        fold_light_curve(dataset.light_curve, candidate)
+        for candidate in result.candidates
+    ]
+
+    for folded in folded_candidates:
+        assert folded.phase.size == dataset.light_curve.observation_count
+        assert folded.flux.size == dataset.light_curve.observation_count
+        assert np.all((-0.5 <= folded.phase) & (folded.phase < 0.5))
+        assert np.all(np.diff(folded.phase) >= 0)
+    assert not np.array_equal(folded_candidates[0].phase, folded_candidates[1].phase)
+
+
+def test_folding_rejects_a_nonpositive_candidate_period() -> None:
+    dataset = load_demo_dataset()
+    candidate = replace(run_bls(dataset.light_curve).best_candidate, period_days=0.0)
+
+    with pytest.raises(ValueError, match="candidate period"):
+        fold_light_curve(dataset.light_curve, candidate)
 
 
 @pytest.mark.parametrize(

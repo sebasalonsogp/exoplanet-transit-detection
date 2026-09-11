@@ -52,20 +52,53 @@ class TransitCandidate:
 
 
 @dataclass(frozen=True, slots=True)
+class FoldedSignal:
+    """Flux samples ordered on a candidate's normalized orbital phase."""
+
+    phase: NDArray[np.float64]
+    flux: NDArray[np.float64]
+
+    def __post_init__(self) -> None:
+        valid = (
+            self.phase.ndim == 1
+            and self.flux.ndim == 1
+            and self.phase.size == self.flux.size
+            and self.phase.size > 0
+            and np.all(np.isfinite(self.phase))
+            and np.all(np.isfinite(self.flux))
+            and np.all((-0.5 <= self.phase) & (self.phase < 0.5))
+            and np.all(np.diff(self.phase) >= 0)
+        )
+        if not valid:
+            raise ValueError("folded signal must contain aligned, finite, phase-ordered samples")
+
+
+@dataclass(frozen=True, slots=True)
 class BLSResult:
     """Periodogram, ranked candidates, and samples folded on the best period."""
 
     period_days: NDArray[np.float64]
     power: NDArray[np.float64]
     candidates: tuple[TransitCandidate, ...]
-    folded_phase: NDArray[np.float64]
-    folded_flux: NDArray[np.float64]
+    folded_signal: FoldedSignal
 
     @property
     def best_candidate(self) -> TransitCandidate:
         """Return the strongest candidate in the ranked result."""
 
         return self.candidates[0]
+
+    @property
+    def folded_phase(self) -> NDArray[np.float64]:
+        """Return the best candidate's folded phase for compatibility."""
+
+        return self.folded_signal.phase
+
+    @property
+    def folded_flux(self) -> NDArray[np.float64]:
+        """Return the best candidate's phase-ordered flux for compatibility."""
+
+        return self.folded_signal.flux
 
 
 def normalize_light_curve(curve: LightCurve) -> LightCurve:
@@ -190,6 +223,25 @@ def _rank_candidate_indices(
     return selected
 
 
+def fold_light_curve(curve: LightCurve, candidate: TransitCandidate) -> FoldedSignal:
+    """Fold one light curve on a validated transit-period candidate."""
+
+    if not np.isfinite(candidate.period_days) or candidate.period_days <= 0:
+        raise ValueError("candidate period must be a positive finite number")
+    if not np.isfinite(candidate.transit_time_btjd):
+        raise ValueError("candidate transit time must be finite")
+
+    phase = (
+        (curve.time - candidate.transit_time_btjd + 0.5 * candidate.period_days)
+        % candidate.period_days
+    ) / candidate.period_days - 0.5
+    order = np.argsort(phase)
+    return FoldedSignal(
+        phase=np.asarray(phase[order], dtype=np.float64),
+        flux=np.asarray(curve.flux[order], dtype=np.float64),
+    )
+
+
 def run_bls(curve: LightCurve, config: BLSConfig | None = None) -> BLSResult:
     """Run Box Least Squares and fold the curve on its strongest candidate."""
 
@@ -224,15 +276,9 @@ def run_bls(curve: LightCurve, config: BLSConfig | None = None) -> BLSResult:
     )
 
     best = candidates[0]
-    phase = (
-        (curve.time - best.transit_time_btjd + 0.5 * best.period_days) % best.period_days
-    ) / best.period_days - 0.5
-    order = np.argsort(phase)
-
     return BLSResult(
         period_days=period_days,
         power=power,
         candidates=candidates,
-        folded_phase=np.asarray(phase[order], dtype=np.float64),
-        folded_flux=np.asarray(curve.flux[order], dtype=np.float64),
+        folded_signal=fold_light_curve(curve, best),
     )
