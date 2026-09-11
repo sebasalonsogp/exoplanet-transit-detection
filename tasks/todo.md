@@ -30,15 +30,15 @@ only when its acceptance criteria and verification steps in the plan have passed
 
 ## Phase 2: Preparation and method-comparison story
 
-- [ ] Task 6: Add signal-preparation views.
-- [ ] Task 7: Package the notebook's Fourier and SVD results.
-- [ ] Task 8: Build the method comparison view.
+- [x] Task 6: Add signal-preparation views.
+- [x] Task 7: Package the notebook's Fourier and SVD results.
+- [x] Task 8: Build the method comparison view.
 
 ### Checkpoint C: Notebook analysis successfully repackaged
 
-- [ ] Prepare and Compare use the same versioned dataset.
-- [ ] Fourier/SVD additions reuse prior work and introduce no unsupported claims.
-- [ ] Full quality suite passes and interaction remains responsive.
+- [x] Prepare and Compare use the same versioned dataset.
+- [x] Fourier/SVD additions reuse prior work and introduce no unsupported claims.
+- [x] Full quality suite passes and interaction remains responsive.
 - [ ] Human review before final interaction and interpretation work.
 
 ## Phase 3: Interaction and interpretation

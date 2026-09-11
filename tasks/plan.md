@@ -236,14 +236,14 @@ denoising research contribution.
 
 **Acceptance criteria:**
 
-- [ ] Each preparation mode is deterministic and preserves aligned time/flux samples.
-- [ ] Tests cover normalization scale, finite output, and detrending edge cases.
-- [ ] The app explains what changed and why in one short sentence per mode.
+- [x] Each preparation mode is deterministic and preserves aligned time/flux samples.
+- [x] Tests cover normalization scale, finite output, and detrending edge cases.
+- [x] The app explains what changed and why in one short sentence per mode.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_analysis.py tests/test_app.py`
-- [ ] Manually compare all preparation modes for stable chart axes and clear labels.
+- [x] `uv run pytest tests/test_analysis.py tests/test_app.py`
+- [x] Manually compare all preparation modes for stable chart axes and clear labels.
 
 **Dependencies:** Tasks 3 and 5
 
@@ -265,14 +265,14 @@ precomputed results when live SVD/Fourier work is slow, unstable, or visually un
 
 **Acceptance criteria:**
 
-- [ ] Fourier and SVD-assisted results are traceable to explicit notebook parameters.
-- [ ] Their candidate periods and display series use the same units and comparison contract as BLS.
-- [ ] Any precomputed artifact has a reproducible generation path and documented rationale.
+- [x] Fourier and SVD-assisted results are traceable to explicit notebook parameters.
+- [x] Their candidate periods and display series use the same units and comparison contract as BLS.
+- [x] Any precomputed artifact has a reproducible generation path and documented rationale.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_comparisons.py`
-- [ ] Recreate the packaged results once and compare them with the committed artifacts.
+- [x] `uv run pytest tests/test_comparisons.py`
+- [x] Recreate the packaged results once and compare them with the committed artifacts.
 
 **Dependencies:** Task 6
 
@@ -293,14 +293,14 @@ visually consistent.
 
 **Acceptance criteria:**
 
-- [ ] A bounded method selector updates the comparison without changing the underlying dataset.
-- [ ] The UI makes the difference between “candidate signal” and “confirmed planet” explicit.
-- [ ] BLS remains the recommended method for this signal shape, with a concise technical reason.
+- [x] A bounded method selector updates the comparison without changing the underlying dataset.
+- [x] The UI makes the difference between “candidate signal” and “confirmed planet” explicit.
+- [x] BLS remains the recommended method for this signal shape, with a concise technical reason.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_app.py`
-- [ ] Manually inspect each method state and confirm the comparison is understandable without
+- [x] `uv run pytest tests/test_app.py`
+- [x] Manually inspect each method state and confirm the comparison is understandable without
   reading the notebook.
 
 **Dependencies:** Task 7
@@ -315,9 +315,9 @@ visually consistent.
 
 ### Checkpoint C: Notebook analysis successfully repackaged
 
-- [ ] Prepare and Compare steps work from the same versioned dataset.
-- [ ] Fourier/SVD additions reuse prior work and introduce no unsupported scientific claims.
-- [ ] Full quality suite passes and interaction remains responsive.
+- [x] Prepare and Compare steps work from the same versioned dataset.
+- [x] Fourier/SVD additions reuse prior work and introduce no unsupported scientific claims.
+- [x] Full quality suite passes and interaction remains responsive.
 - [ ] Human review before final interaction and interpretation work.
 
 ## Phase 3: Interaction and interpretation
