@@ -5,7 +5,7 @@ only when its acceptance criteria and verification steps in the plan have passed
 
 ## Phase 0: Source hygiene and evidence
 
-- [ ] Task 1: Sanitize the archived notebook.
+- [x] Task 1: Sanitize the archived notebook.
 - [ ] Task 2: Establish the verified demo data package.
 
 ### Checkpoint A: Clean and trustworthy source

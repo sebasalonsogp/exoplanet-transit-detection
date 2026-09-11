@@ -77,14 +77,14 @@ reintroduced accidentally.
 
 **Acceptance criteria:**
 
-- [ ] `assets/astro.ipynb` contains no Windows drive paths, user-home paths, or secrets.
-- [ ] All code-cell outputs and execution counts are cleared without deleting source or Markdown.
-- [ ] An automated repository-hygiene test detects absolute local paths in the notebook.
+- [x] `assets/astro.ipynb` contains no Windows drive paths, user-home paths, or secrets.
+- [x] All code-cell outputs and execution counts are cleared without deleting source or Markdown.
+- [x] An automated repository-hygiene test detects absolute local paths in the notebook.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_repository_hygiene.py`
-- [ ] Open the notebook and confirm its narrative and code remain readable.
+- [x] `uv run pytest tests/test_repository_hygiene.py`
+- [x] Open the notebook and confirm its narrative and code remain readable.
 
 **Dependencies:** None
 
