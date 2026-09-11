@@ -330,14 +330,14 @@ serializable results with bounded keys so normal interaction feels immediate.
 
 **Acceptance criteria:**
 
-- [ ] Controls are limited to scientifically meaningful options and have stable widget keys.
-- [ ] Candidate selection updates the folded chart and measurements together.
-- [ ] Static loads and expensive computations are cached without unbounded parameter growth.
+- [x] Controls are limited to scientifically meaningful options and have stable widget keys.
+- [x] Candidate selection updates the folded chart and measurements together.
+- [x] Static loads and expensive computations are cached without unbounded parameter growth.
 
 **Verification:**
 
-- [ ] AppTest exercises every selectable candidate and preparation mode without exceptions.
-- [ ] Manual rerun check confirms repeated selections do not redo expensive work unnecessarily.
+- [x] AppTest exercises every selectable candidate and preparation mode without exceptions.
+- [x] Manual rerun check confirms repeated selections do not redo expensive work unnecessarily.
 
 **Dependencies:** Tasks 5 and 8
 
@@ -358,14 +358,14 @@ limits in recruiter-friendly language.
 
 **Acceptance criteria:**
 
-- [ ] Every displayed metric has a unit, definition, and traceable source or computation.
-- [ ] Caveats distinguish transit-like evidence from planetary confirmation.
-- [ ] “Under the hood” details use progressive disclosure and do not interrupt the main story.
+- [x] Every displayed metric has a unit, definition, and traceable source or computation.
+- [x] Caveats distinguish transit-like evidence from planetary confirmation.
+- [x] “Under the hood” details use progressive disclosure and do not interrupt the main story.
 
 **Verification:**
 
-- [ ] Unit tests cover metric formatting and missing/invalid measurement handling.
-- [ ] AppTest confirms the selected candidate and displayed evidence stay synchronized.
+- [x] Unit tests cover metric formatting and missing/invalid measurement handling.
+- [x] AppTest confirms the selected candidate and displayed evidence stay synchronized.
 
 **Dependencies:** Tasks 4 and 9
 
@@ -380,9 +380,9 @@ limits in recruiter-friendly language.
 
 ### Checkpoint D: Portfolio MVP
 
-- [ ] Observe → Prepare → Compare → Search → Fold → Interpret works end to end.
-- [ ] Default state is complete; interaction deepens the story rather than unlocking it.
-- [ ] No external service, upload, database, or authentication is required.
+- [x] Observe → Prepare → Compare → Search → Fold → Interpret works end to end.
+- [x] Default state is complete; interaction deepens the story rather than unlocking it.
+- [x] No external service, upload, database, or authentication is required.
 - [ ] Human approval that the MVP content and behavior are complete.
 
 ## Phase 4: Portfolio polish and launch readiness

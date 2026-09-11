@@ -43,14 +43,14 @@ only when its acceptance criteria and verification steps in the plan have passed
 
 ## Phase 3: Interaction and interpretation
 
-- [ ] Task 9: Add bounded candidate exploration and caching.
-- [ ] Task 10: Add the evidence and limitations panel.
+- [x] Task 9: Add bounded candidate exploration and caching.
+- [x] Task 10: Add the evidence and limitations panel.
 
 ### Checkpoint D: Portfolio MVP
 
-- [ ] Observe → Prepare → Compare → Search → Fold → Interpret works end to end.
-- [ ] Default state is complete and interaction deepens the story.
-- [ ] No external service, upload, database, or authentication is required.
+- [x] Observe → Prepare → Compare → Search → Fold → Interpret works end to end.
+- [x] Default state is complete and interaction deepens the story.
+- [x] No external service, upload, database, or authentication is required.
 - [ ] Human approval that the MVP content and behavior are complete.
 
 ## Phase 4: Portfolio polish and launch readiness
