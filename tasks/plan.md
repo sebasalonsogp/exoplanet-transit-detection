@@ -395,14 +395,14 @@ Streamlit layout capabilities before considering CSS.
 
 **Acceptance criteria:**
 
-- [ ] The interface remains readable at desktop and narrow widths with no cramped metric grid.
-- [ ] Color is not the only carrier of meaning; labels, contrast, and keyboard-usable widgets are clear.
-- [ ] Loading, empty, and error states look intentional and preserve the analytical narrative.
+- [x] The interface remains readable at desktop and narrow widths with no cramped metric grid.
+- [x] Color is not the only carrier of meaning; labels, contrast, and keyboard-usable widgets are clear.
+- [x] Loading, empty, and error states look intentional and preserve the analytical narrative.
 
 **Verification:**
 
-- [ ] Run the full automated quality suite.
-- [ ] Complete a manual visual/accessibility pass at desktop and mobile-like widths.
+- [x] Run the full automated quality suite.
+- [x] Complete a manual visual/accessibility pass at desktop and mobile-like widths.
 
 **Dependencies:** Task 10
 
@@ -424,14 +424,14 @@ recruiters evaluate the project quickly.
 
 **Acceptance criteria:**
 
-- [ ] A new reader can run the app and understand the engineering decisions from the README.
-- [ ] Data and scientific claims have direct attribution, and limitations are explicit.
-- [ ] Repository links and media contain no machine-specific local paths.
+- [x] A new reader can run the app and understand the engineering decisions from the README.
+- [x] Data and scientific claims have direct attribution, and limitations are explicit.
+- [x] Repository links and media contain no machine-specific local paths.
 
 **Verification:**
 
-- [ ] Follow the README setup from a clean environment or fresh clone.
-- [ ] Check every link and rendered Markdown section.
+- [x] Follow the README setup from a clean environment or fresh clone.
+- [x] Check every link and rendered Markdown section.
 
 **Dependencies:** Tasks 10 and 11
 
@@ -451,13 +451,13 @@ a real compatibility need appears.
 
 **Acceptance criteria:**
 
-- [ ] Pull requests and pushes to `main` run tests, linting, and type checking.
-- [ ] The workflow uses the project's declared Python version and lockfile.
-- [ ] CI configuration contains no credentials and duplicates no deployment workflow.
+- [x] Pull requests and pushes to `main` run tests, linting, and type checking.
+- [x] The workflow uses the project's declared Python version and lockfile.
+- [x] CI configuration contains no credentials and duplicates no deployment workflow.
 
 **Verification:**
 
-- [ ] Validate the workflow syntax locally where possible.
+- [x] Validate the workflow syntax locally where possible.
 - [ ] Confirm the first GitHub Actions run passes.
 
 **Dependencies:** Task 5

@@ -55,8 +55,8 @@ only when its acceptance criteria and verification steps in the plan have passed
 
 ## Phase 4: Portfolio polish and launch readiness
 
-- [ ] Task 11: Apply responsive visual and accessibility polish.
-- [ ] Task 12: Write the portfolio documentation.
+- [x] Task 11: Apply responsive visual and accessibility polish.
+- [x] Task 12: Write the portfolio documentation.
 - [ ] Task 13: Add a minimal continuous-integration gate.
 - [ ] Task 14: Deploy and perform the public-readiness audit.
 
