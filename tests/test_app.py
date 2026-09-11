@@ -37,7 +37,7 @@ def test_app_tells_the_full_detection_story_by_default() -> None:
     assert metrics["Observations"] == "18,420"
     assert metrics["Best BLS period"].endswith("days")
     assert len(app.get("plotly_chart")) == 5
-    assert app.segmented_control(key="preparation-mode").value == "Detrended"
+    assert app.segmented_control(key="preparation-mode").value == "Normalized"
     assert app.segmented_control(key="comparison-method").value == "Box Least Squares"
     assert app.segmented_control(key="candidate-period").value == "#1 · 1.76299 d"
 
@@ -121,10 +121,8 @@ def test_preparation_selection_updates_the_folded_signal_view() -> None:
     app = AppTest.from_file(str(APP_PATH), default_timeout=10).run()
 
     default_spec = json.loads(app.get("plotly_chart")[-1].proto.spec)
-    assert default_spec["data"][0]["name"] == "Folded detrended observations"
-    assert default_spec["layout"]["yaxis"]["title"]["text"] == (
-        "Detrended normalized flux"
-    )
+    assert default_spec["data"][0]["name"] == "Folded normalized observations"
+    assert default_spec["layout"]["yaxis"]["title"]["text"] == "Normalized flux"
 
     app = app.segmented_control(key="preparation-mode").set_value("Raw").run()
     raw_spec = json.loads(app.get("plotly_chart")[-1].proto.spec)

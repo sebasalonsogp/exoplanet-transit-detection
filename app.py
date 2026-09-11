@@ -122,12 +122,13 @@ st.plotly_chart(
 st.header("2. Prepare the signal", icon=":material/tune:")
 st.write(
     "Move through the same observations as they are scaled and detrended for analysis. "
-    "The default shows the prepared signal used by the Fourier and SVD comparisons."
+    "The default preserves transit depth on a unitless scale; detrended shows the input used "
+    "by the Fourier and SVD comparisons."
 )
 preparation_mode = st.segmented_control(
     "Signal preparation",
     options=["Raw", "Normalized", "Detrended"],
-    default="Detrended",
+    default="Normalized",
     key="preparation-mode",
     selection_mode="single",
     required=True,
