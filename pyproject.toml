@@ -9,6 +9,7 @@ description = "An interactive workbench for exploring exoplanet transit detectio
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
 dependencies = [
+    "astropy>=8.0,<9.0",
     "numpy>=2.0,<3.0",
     "streamlit>=1.57,<2.0",
 ]
@@ -39,3 +40,7 @@ select = ["E", "F", "I", "UP"]
 python_version = "3.12"
 strict = true
 files = ["src", "app.py"]
+
+[[tool.mypy.overrides]]
+module = ["astropy", "astropy.*"]
+ignore_missing_imports = true

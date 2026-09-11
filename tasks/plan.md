@@ -169,15 +169,15 @@ candidates, folded phase/flux, and summary measurements without UI concerns.
 
 **Acceptance criteria:**
 
-- [ ] The best candidate period matches the verified reference within a documented tolerance.
-- [ ] The result includes periodogram values, folded samples, approximate depth/duration, and a
+- [x] The best candidate period matches the verified reference within a documented tolerance.
+- [x] The result includes periodogram values, folded samples, approximate depth/duration, and a
   clearly named signal-strength measure.
-- [ ] Inputs, search bounds, units, and any numerical assumptions are explicit and tested.
+- [x] Inputs, search bounds, units, and any numerical assumptions are explicit and tested.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_analysis.py`
-- [ ] `uv run ruff check . && uv run mypy`
+- [x] `uv run pytest tests/test_analysis.py`
+- [x] `uv run ruff check . && uv run mypy`
 
 **Dependencies:** Task 3
 
