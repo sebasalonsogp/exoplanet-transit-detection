@@ -44,5 +44,5 @@ strict = true
 files = ["src", "app.py"]
 
 [[tool.mypy.overrides]]
-module = ["astropy", "astropy.*", "plotly", "plotly.*"]
+module = ["astropy", "astropy.*", "plotly", "plotly.*", "scipy", "scipy.*"]
 ignore_missing_imports = true

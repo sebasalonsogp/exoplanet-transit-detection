@@ -62,4 +62,5 @@ class TransitDataset:
     """A validated light curve paired with its target metadata."""
 
     light_curve: LightCurve
+    raw_light_curve: LightCurve
     target: TargetMetadata

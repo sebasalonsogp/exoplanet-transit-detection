@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import numpy as np
 from astropy.timeseries import BoxLeastSquares
 from numpy.typing import NDArray
+from scipy.signal import savgol_filter
 
 from transit_lab.models import LightCurve
 
@@ -19,6 +20,23 @@ class BLSConfig:
     frequency_factor: float = 1.0
     candidate_count: int = 3
     candidate_separation_days: float = 0.05
+
+
+@dataclass(frozen=True, slots=True)
+class DetrendConfig:
+    """Savitzky-Golay settings reused from the source notebook."""
+
+    window_length: int = 101
+    polynomial_order: int = 3
+
+
+@dataclass(frozen=True, slots=True)
+class PreparedSignals:
+    """Aligned raw, normalized, and detrended views of one light curve."""
+
+    raw: LightCurve
+    normalized: LightCurve
+    detrended: LightCurve
 
 
 @dataclass(frozen=True, slots=True)
@@ -48,6 +66,90 @@ class BLSResult:
         """Return the strongest candidate in the ranked result."""
 
         return self.candidates[0]
+
+
+def normalize_light_curve(curve: LightCurve) -> LightCurve:
+    """Scale a flux series and its uncertainty by the median flux."""
+
+    median_flux = float(np.median(curve.flux))
+    if median_flux <= 0:
+        raise ValueError("median flux must be positive for normalization")
+
+    normalized_error = (
+        None if curve.flux_error is None else curve.flux_error / median_flux
+    )
+    return LightCurve(
+        time=curve.time,
+        flux=np.asarray(curve.flux / median_flux, dtype=np.float64),
+        flux_error=(
+            None
+            if normalized_error is None
+            else np.asarray(normalized_error, dtype=np.float64)
+        ),
+    )
+
+
+def _validate_detrend_config(curve: LightCurve, config: DetrendConfig) -> None:
+    valid = (
+        config.window_length > 0
+        and config.window_length % 2 == 1
+        and 0 <= config.polynomial_order < config.window_length
+    )
+    if not valid:
+        raise ValueError(
+            "detrending configuration requires an odd window above the polynomial order"
+        )
+    if curve.observation_count < config.window_length:
+        raise ValueError(
+            f"detrending requires at least {config.window_length} samples for this filter window"
+        )
+
+
+def detrend_light_curve(
+    curve: LightCurve,
+    config: DetrendConfig | None = None,
+) -> LightCurve:
+    """Divide normalized flux by the notebook's smooth Savitzky-Golay trend."""
+
+    settings = config or DetrendConfig()
+    _validate_detrend_config(curve, settings)
+    trend = np.asarray(
+        savgol_filter(
+            curve.flux,
+            window_length=settings.window_length,
+            polyorder=settings.polynomial_order,
+            mode="interp",
+        ),
+        dtype=np.float64,
+    )
+    zero_tolerance = np.finfo(np.float64).eps * max(1.0, float(np.max(np.abs(trend))))
+    if np.any(np.abs(trend) <= zero_tolerance):
+        raise ValueError("detrending trend contains values too close to zero")
+
+    detrended_error = None if curve.flux_error is None else curve.flux_error / np.abs(trend)
+    return LightCurve(
+        time=curve.time,
+        flux=np.asarray(curve.flux / trend, dtype=np.float64),
+        flux_error=(
+            None
+            if detrended_error is None
+            else np.asarray(detrended_error, dtype=np.float64)
+        ),
+    )
+
+
+def prepare_signals(
+    raw_curve: LightCurve,
+    detrend_config: DetrendConfig | None = None,
+) -> PreparedSignals:
+    """Build the three notebook-derived signal preparation views."""
+
+    normalized = normalize_light_curve(raw_curve)
+    return PreparedSignals(
+        raw=raw_curve,
+        normalized=normalized,
+        detrended=detrend_light_curve(normalized, detrend_config),
+    )
 
 
 def _validate_config(config: BLSConfig) -> None:

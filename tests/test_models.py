@@ -62,7 +62,8 @@ def test_transit_dataset_keeps_curve_and_target_together() -> None:
         reference_period_days=1.7635881,
     )
 
-    dataset = TransitDataset(light_curve=curve, target=target)
+    dataset = TransitDataset(light_curve=curve, raw_light_curve=curve, target=target)
 
     assert dataset.light_curve.observation_count == 2
+    assert dataset.raw_light_curve.observation_count == 2
     assert dataset.target.planet_name == "KOI-13 b"

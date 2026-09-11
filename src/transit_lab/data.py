@@ -10,14 +10,20 @@ import numpy as np
 from transit_lab.models import LightCurve, TargetMetadata, TransitDataset
 
 DEFAULT_DATA_DIRECTORY = Path(__file__).resolve().parents[2] / "data" / "demo"
-REQUIRED_COLUMNS = {"time_btjd", "normalized_flux", "normalized_flux_err"}
+REQUIRED_COLUMNS = {
+    "time_btjd",
+    "sap_flux_e_per_s",
+    "sap_flux_err_e_per_s",
+    "normalized_flux",
+    "normalized_flux_err",
+}
 
 
 class DataValidationError(ValueError):
     """Raised when bundled observations or metadata violate the data contract."""
 
 
-def _load_light_curve(path: Path) -> LightCurve:
+def _load_light_curves(path: Path) -> tuple[LightCurve, LightCurve]:
     try:
         with path.open(encoding="utf-8", newline="") as source:
             reader = csv.DictReader(source)
@@ -36,12 +42,23 @@ def _load_light_curve(path: Path) -> LightCurve:
 
     try:
         time = np.array([float(row["time_btjd"]) for row in rows], dtype=np.float64)
-        flux = np.array([float(row["normalized_flux"]) for row in rows], dtype=np.float64)
-        flux_error = np.array(
+        raw_flux = np.array([float(row["sap_flux_e_per_s"]) for row in rows], dtype=np.float64)
+        raw_flux_error = np.array(
+            [float(row["sap_flux_err_e_per_s"]) for row in rows],
+            dtype=np.float64,
+        )
+        normalized_flux = np.array(
+            [float(row["normalized_flux"]) for row in rows],
+            dtype=np.float64,
+        )
+        normalized_flux_error = np.array(
             [float(row["normalized_flux_err"]) for row in rows],
             dtype=np.float64,
         )
-        return LightCurve(time=time, flux=flux, flux_error=flux_error)
+        return (
+            LightCurve(time=time, flux=normalized_flux, flux_error=normalized_flux_error),
+            LightCurve(time=time, flux=raw_flux, flux_error=raw_flux_error),
+        )
     except (TypeError, ValueError) as error:
         raise DataValidationError(f"invalid light curve data: {error}") from error
 
@@ -88,7 +105,9 @@ def load_demo_dataset(directory: Path | None = None) -> TransitDataset:
     """Load and validate the repository's bundled demonstration dataset."""
 
     data_directory = directory or DEFAULT_DATA_DIRECTORY
+    normalized_curve, raw_curve = _load_light_curves(data_directory / "light_curve.csv")
     return TransitDataset(
-        light_curve=_load_light_curve(data_directory / "light_curve.csv"),
+        light_curve=normalized_curve,
+        raw_light_curve=raw_curve,
         target=_load_target(data_directory / "target.json"),
     )
