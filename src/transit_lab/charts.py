@@ -45,6 +45,7 @@ def build_light_curve_chart(curve: LightCurve) -> go.Figure:
 def build_periodogram_chart(result: BLSResult, reference_period_days: float) -> go.Figure:
     """Plot BLS power and identify ranked candidate periods."""
 
+    marker_sizes = [max(7, 11 - 2 * index) for index in range(len(result.candidates))]
     figure = go.Figure()
     figure.add_trace(
         go.Scatter(
@@ -64,7 +65,7 @@ def build_periodogram_chart(result: BLSResult, reference_period_days: float) -> 
             name="Ranked candidates",
             marker={
                 "color": CANDIDATE_COLOR,
-                "size": [11, 9, 8],
+                "size": marker_sizes,
                 "line": {"color": "#07111F", "width": 1},
             },
             customdata=[

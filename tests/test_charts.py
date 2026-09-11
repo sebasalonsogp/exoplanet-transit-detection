@@ -1,6 +1,6 @@
 import numpy as np
 
-from transit_lab.analysis import run_bls
+from transit_lab.analysis import BLSConfig, run_bls
 from transit_lab.charts import (
     build_folded_chart,
     build_light_curve_chart,
@@ -31,6 +31,15 @@ def test_periodogram_chart_marks_ranked_candidates_and_reference() -> None:
     assert len(figure.layout.shapes) == 1
     assert figure.layout.xaxis.title.text == "Trial period (days)"
     assert figure.layout.yaxis.title.text == "BLS log-likelihood power"
+
+
+def test_periodogram_chart_supports_the_configured_candidate_count() -> None:
+    dataset = load_demo_dataset()
+    result = run_bls(dataset.light_curve, BLSConfig(candidate_count=2))
+
+    figure = build_periodogram_chart(result, dataset.target.reference_period_days)
+
+    assert len(figure.data[1].marker.size) == 2
 
 
 def test_folded_chart_layers_observations_and_binned_median() -> None:

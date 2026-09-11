@@ -28,7 +28,7 @@ st.title("Transit Lab")
 st.caption("An interactive workbench for finding planetary signals in noisy starlight.")
 
 st.markdown(
-    "Follow one verified TESS light curve from raw observations to a reproducible "
+    "Follow one verified TESS light curve from normalized observations to a reproducible "
     "transit-period candidate."
 )
 st.markdown("**Observe** → **Search** → **Fold**")
