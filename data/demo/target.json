@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "target": {
+    "tic_id": 158324245,
+    "toi": "TOI-1161.01",
+    "planet_name": "KOI-13 b",
+    "host_name": "KOI-13",
+    "aliases": [
+      "Kepler-13 b",
+      "TOI-1161 b"
+    ],
+    "right_ascension_deg": 286.971388,
+    "declination_deg": 46.868246
+  },
+  "observation": {
+    "mission": "TESS",
+    "sector": 14,
+    "camera": 2,
+    "ccd": 3,
+    "cadence_seconds": 120,
+    "pipeline": "SPOC",
+    "product_type": "Target Pixel File",
+    "source_product": "tess2019198215352-s0014-0000000158324245-0150-s_tp.fits",
+    "source_data_uri": "mast:TESS/product/tess2019198215352-s0014-0000000158324245-0150-s_tp.fits",
+    "time_system": "BTJD (BJD - 2457000)",
+    "time_scale": "TDB",
+    "runtime_network_required": false
+  },
+  "processing": {
+    "tool": "Lightkurve",
+    "tool_version": "2.6.0",
+    "quality_mask": "Lightkurve default",
+    "aperture": "SPOC pipeline aperture",
+    "steps": [
+      "Download the Sector 14 SPOC target pixel file from MAST.",
+      "Sum the pixels in the pipeline aperture to obtain simple aperture photometry flux.",
+      "Remove samples with non-finite time, flux, or flux uncertainty.",
+      "Sort samples by BTJD.",
+      "Divide flux and flux uncertainty by the median SAP flux."
+    ],
+    "median_sap_flux_e_per_s": 20991.2548828125,
+    "row_count": 18420,
+    "time_start_btjd": 1683.356050914555,
+    "time_end_btjd": 1710.205935520376,
+    "csv_sha256": "4f4b06297d00cdd1a2cef7a6d870a47b5d1ce103318cbf11c0372663d5195571"
+  },
+  "columns": {
+    "time_btjd": "Observation time in BTJD (BJD - 2457000 days).",
+    "sap_flux_e_per_s": "Simple aperture photometry flux in electrons per second.",
+    "sap_flux_err_e_per_s": "One-sigma SAP flux uncertainty in electrons per second.",
+    "normalized_flux": "SAP flux divided by its median value.",
+    "normalized_flux_err": "SAP flux uncertainty divided by the median SAP flux."
+  },
+  "reference_values": {
+    "disposition_code": "KP",
+    "disposition_label": "Known planet",
+    "orbital_period_days": 1.7635881,
+    "transit_depth_ppm": 6650.0,
+    "transit_duration_hours": 3.092,
+    "archive_composite": {
+      "orbital_period_days": 1.763588,
+      "transit_depth_percent": 0.45906,
+      "transit_duration_hours": 3.16877
+    },
+    "note": "TOI and composite archive tables compile different source values; the app treats depth and duration as approximate rather than ground truth."
+  },
+  "sources": [
+    {
+      "name": "MAST Sector 14 SPOC target pixel file",
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:TESS/product/tess2019198215352-s0014-0000000158324245-0150-s_tp.fits",
+      "retrieved": "2026-09-11"
+    },
+    {
+      "name": "MAST TESS data product documentation",
+      "url": "https://archive.stsci.edu/missions-and-data/tess/data-products",
+      "retrieved": "2026-09-11"
+    },
+    {
+      "name": "NASA Exoplanet Archive TESS Project Candidates table",
+      "url": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+      "query": "SELECT toi, tid, tfopwg_disp, pl_orbper, pl_trandep, pl_trandurh, ra, dec, rowupdate FROM toi WHERE tid = 158324245",
+      "retrieved": "2026-09-11"
+    },
+    {
+      "name": "NASA Exoplanet Archive Planetary Systems Composite Parameters table",
+      "url": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+      "query": "SELECT pl_name, hostname, pl_orbper, pl_trandep, pl_trandur, tic_id, disc_facility, discoverymethod, ra, dec FROM pscomppars WHERE tic_id = 'TIC 158324245'",
+      "retrieved": "2026-09-11"
+    },
+    {
+      "name": "MAST data use policy",
+      "url": "https://archive.stsci.edu/publishing/data-use",
+      "retrieved": "2026-09-11"
+    }
+  ]
+}

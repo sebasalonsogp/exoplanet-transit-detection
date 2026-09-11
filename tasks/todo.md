@@ -6,13 +6,13 @@ only when its acceptance criteria and verification steps in the plan have passed
 ## Phase 0: Source hygiene and evidence
 
 - [x] Task 1: Sanitize the archived notebook.
-- [ ] Task 2: Establish the verified demo data package.
+- [x] Task 2: Establish the verified demo data package.
 
 ### Checkpoint A: Clean and trustworthy source
 
-- [ ] Notebook hygiene test passes.
+- [x] Notebook hygiene test passes.
 - [ ] Data provenance and reference values have been reviewed.
-- [ ] No runtime network request or local machine path is required.
+- [x] No runtime network request or local machine path is required.
 - [ ] Human review before Phase 1.
 
 ## Phase 1: First end-to-end analytical slice

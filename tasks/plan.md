@@ -104,15 +104,15 @@ and redistribution terms.
 
 **Acceptance criteria:**
 
-- [ ] The bundled dataset has explicit time and normalized-flux columns with finite values.
-- [ ] Target identity, sector/observation context, units, source URLs, and reference values are
+- [x] The bundled dataset has explicit time and normalized-flux columns with finite values.
+- [x] Target identity, sector/observation context, units, source URLs, and reference values are
   recorded in metadata and `data/README.md`.
-- [ ] The application can use the local package without network access or an absolute path.
+- [x] The application can use the local package without network access or an absolute path.
 
 **Verification:**
 
-- [ ] Inspect the metadata against the cited NASA Exoplanet Archive/MAST records.
-- [ ] Run an offline load check from the repository root.
+- [x] Inspect the metadata against the cited NASA Exoplanet Archive/MAST records.
+- [x] Run an offline load check from the repository root.
 
 **Dependencies:** Task 1
 
@@ -126,9 +126,9 @@ and redistribution terms.
 
 ### Checkpoint A: Clean and trustworthy source
 
-- [ ] Notebook hygiene test passes.
+- [x] Notebook hygiene test passes.
 - [ ] Data provenance and reference values have been reviewed by the user.
-- [ ] No runtime network request or local machine path is required.
+- [x] No runtime network request or local machine path is required.
 - [ ] Human review before Phase 1.
 
 ## Phase 1: First end-to-end analytical slice
