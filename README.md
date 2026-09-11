@@ -5,6 +5,11 @@ reproducible case study in scientific data engineering and visualization. Visito
 follow one verified TESS light curve from raw observations through signal preparation,
 method comparison, period search, phase folding, and evidence interpretation.
 
+[![Quality checks](https://github.com/sebasalonsogp/exoplanet-transit-lab/actions/workflows/quality.yml/badge.svg)](https://github.com/sebasalonsogp/exoplanet-transit-lab/actions/workflows/quality.yml)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://exoplanet-transit-lab-nbwmcaxjydlejrmnvwzaug.streamlit.app/)
+
+**[Launch the live dashboard](https://exoplanet-transit-lab-nbwmcaxjydlejrmnvwzaug.streamlit.app/)**
+
 ![Transit Lab dashboard showing the KOI-13 b summary and TESS light curve](docs/assets/dashboard-preview.png)
 
 ## Project origin

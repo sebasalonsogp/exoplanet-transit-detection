@@ -477,15 +477,15 @@ a separate release action that requires explicit user approval at this checkpoin
 
 **Acceptance criteria:**
 
-- [ ] The deployed default story loads without credentials or runtime network data access.
+- [x] The deployed default story loads without credentials or runtime network data access.
 - [x] Repository-wide scans find no secrets, local execution paths, or unintended personal data.
-- [ ] The deployment URL, README, repository visibility, and release status match the user's
+- [x] The deployment URL, README, repository visibility, and release status match the user's
   explicit launch decision.
 
 **Verification:**
 
-- [ ] Smoke-test the deployed app in a fresh browser session at desktop and narrow widths.
-- [ ] Run the full local quality suite and inspect the final staged/public diff.
+- [x] Smoke-test the deployed app in a fresh browser session at desktop and narrow widths.
+- [x] Run the full local quality suite and inspect the final staged/public diff.
 
 **Dependencies:** Tasks 11, 12, and 13
 
@@ -499,10 +499,10 @@ a separate release action that requires explicit user approval at this checkpoin
 
 ### Checkpoint E: Ready to share
 
-- [ ] Hosted app and repository tell the same concise project story.
-- [ ] CI is green and the release audit has no unresolved findings.
-- [ ] User explicitly approves any repository visibility change.
-- [ ] Portfolio project is ready to link from GitHub, a résumé, and applications.
+- [x] Hosted app and repository tell the same concise project story.
+- [x] CI is green and the release audit has no unresolved findings.
+- [x] User explicitly approves any repository visibility change.
+- [x] Portfolio project is ready to link from GitHub, a résumé, and applications.
 
 ## Risks and mitigations
 

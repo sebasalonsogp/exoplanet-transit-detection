@@ -58,14 +58,14 @@ only when its acceptance criteria and verification steps in the plan have passed
 - [x] Task 11: Apply responsive visual and accessibility polish.
 - [x] Task 12: Write the portfolio documentation.
 - [x] Task 13: Add a minimal continuous-integration gate.
-- [ ] Task 14: Deploy and perform the public-readiness audit.
+- [x] Task 14: Deploy and perform the public-readiness audit.
 
 ### Checkpoint E: Ready to share
 
-- [ ] Hosted app and repository tell the same concise project story.
-- [ ] CI is green and the release audit has no unresolved findings.
-- [ ] User explicitly approves any repository visibility change.
-- [ ] Project is ready to link from GitHub, a résumé, and applications.
+- [x] Hosted app and repository tell the same concise project story.
+- [x] CI is green and the release audit has no unresolved findings.
+- [x] User explicitly approves any repository visibility change.
+- [x] Project is ready to link from GitHub, a résumé, and applications.
 
 ## Deferred unless the plan changes
 
