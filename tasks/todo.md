@@ -17,7 +17,7 @@ only when its acceptance criteria and verification steps in the plan have passed
 
 ## Phase 1: First end-to-end analytical slice
 
-- [ ] Task 3: Implement the data contract and loader.
+- [x] Task 3: Implement the data contract and loader.
 - [ ] Task 4: Reproduce the BLS result.
 - [ ] Task 5: Render the core recruiter-facing story.
 

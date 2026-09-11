@@ -141,14 +141,14 @@ failure messages before analysis begins.
 
 **Acceptance criteria:**
 
-- [ ] The loader returns typed light-curve and target-metadata objects.
-- [ ] Invalid columns, non-finite values, misaligned samples, and empty data fail clearly.
-- [ ] Loading uses repository-relative resources and contains no Streamlit calls.
+- [x] The loader returns typed light-curve and target-metadata objects.
+- [x] Invalid columns, non-finite values, misaligned samples, and empty data fail clearly.
+- [x] Loading uses repository-relative resources and contains no Streamlit calls.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_data.py tests/test_models.py`
-- [ ] `uv run mypy`
+- [x] `uv run pytest tests/test_data.py tests/test_models.py`
+- [x] `uv run mypy`
 
 **Dependencies:** Task 2
 
