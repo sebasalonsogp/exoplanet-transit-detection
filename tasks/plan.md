@@ -458,7 +458,7 @@ a real compatibility need appears.
 **Verification:**
 
 - [x] Validate the workflow syntax locally where possible.
-- [ ] Confirm the first GitHub Actions run passes.
+- [x] Confirm a GitHub Actions run passes on `main` (run `34654705627`).
 
 **Dependencies:** Task 5
 
@@ -478,7 +478,7 @@ a separate release action that requires explicit user approval at this checkpoin
 **Acceptance criteria:**
 
 - [ ] The deployed default story loads without credentials or runtime network data access.
-- [ ] Repository-wide scans find no secrets, local execution paths, or unintended personal data.
+- [x] Repository-wide scans find no secrets, local execution paths, or unintended personal data.
 - [ ] The deployment URL, README, repository visibility, and release status match the user's
   explicit launch decision.
 

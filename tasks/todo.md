@@ -57,7 +57,7 @@ only when its acceptance criteria and verification steps in the plan have passed
 
 - [x] Task 11: Apply responsive visual and accessibility polish.
 - [x] Task 12: Write the portfolio documentation.
-- [ ] Task 13: Add a minimal continuous-integration gate.
+- [x] Task 13: Add a minimal continuous-integration gate.
 - [ ] Task 14: Deploy and perform the public-readiness audit.
 
 ### Checkpoint E: Ready to share
