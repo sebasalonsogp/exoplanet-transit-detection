@@ -1,0 +1,16 @@
+[theme]
+base = "dark"
+primaryColor = "#0E7490"
+backgroundColor = "#07111F"
+secondaryBackgroundColor = "#0E1B2B"
+textColor = "#E6EDF5"
+borderColor = "#24364A"
+orangeColor = "#F2B84B"
+blueColor = "#22AFC6"
+chartCategoricalColors = ["#22AFC6", "#F2B84B", "#7DD3A7", "#A8B8CC"]
+showWidgetBorder = true
+baseRadius = "small"
+font = "sans-serif"
+
+[browser]
+gatherUsageStats = false
