@@ -83,7 +83,7 @@ st.write(
 st.plotly_chart(
     build_light_curve_chart(dataset.light_curve),
     key="light-curve-chart",
-    config={"displaylogo": False, "scrollZoom": False},
+    config={"displaylogo": False, "displayModeBar": False, "scrollZoom": False},
 )
 
 st.header("2. Search for repeating dips", icon=":material/search:")
@@ -94,7 +94,7 @@ st.write(
 st.plotly_chart(
     build_periodogram_chart(result, target.reference_period_days),
     key="periodogram-chart",
-    config={"displaylogo": False, "scrollZoom": False},
+    config={"displaylogo": False, "displayModeBar": False, "scrollZoom": False},
 )
 st.caption(
     f"Recovered period: {best.period_days:.5f} days · "
@@ -111,7 +111,7 @@ st.write(
 st.plotly_chart(
     build_folded_chart(result),
     key="folded-chart",
-    config={"displaylogo": False, "scrollZoom": False},
+    config={"displaylogo": False, "displayModeBar": False, "scrollZoom": False},
 )
 
 with st.expander("Under the hood", icon=":material/code:"):

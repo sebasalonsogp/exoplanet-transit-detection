@@ -17,10 +17,15 @@ def _apply_layout(figure: go.Figure, *, hovermode: str = "closest") -> go.Figure
         height=380,
         margin={"l": 16, "r": 16, "t": 24, "b": 16},
         hovermode=hovermode,
+        dragmode=False,
         legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "x": 0},
     )
-    figure.update_xaxes(showgrid=False)
-    figure.update_yaxes(gridcolor="rgba(168, 184, 204, 0.16)", zeroline=False)
+    figure.update_xaxes(showgrid=False, fixedrange=True)
+    figure.update_yaxes(
+        gridcolor="rgba(168, 184, 204, 0.16)",
+        zeroline=False,
+        fixedrange=True,
+    )
     return figure
 
 

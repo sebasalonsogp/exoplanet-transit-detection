@@ -54,3 +54,19 @@ def test_folded_chart_layers_observations_and_binned_median() -> None:
     assert np.min(figure.data[0].x) >= -0.5
     assert np.max(figure.data[0].x) < 0.5
     assert figure.layout.xaxis.title.text == "Orbital phase"
+
+
+def test_charts_preserve_hover_without_allowing_accidental_navigation() -> None:
+    dataset = load_demo_dataset()
+    result = run_bls(dataset.light_curve)
+    figures = [
+        build_light_curve_chart(dataset.light_curve),
+        build_periodogram_chart(result, dataset.target.reference_period_days),
+        build_folded_chart(result),
+    ]
+
+    for figure in figures:
+        assert figure.layout.hovermode
+        assert figure.layout.dragmode is False
+        assert figure.layout.xaxis.fixedrange is True
+        assert figure.layout.yaxis.fixedrange is True
