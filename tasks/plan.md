@@ -198,14 +198,14 @@ candidate, and phase-folded transit without requiring visitor configuration.
 
 **Acceptance criteria:**
 
-- [ ] The default page tells a complete Observe → Search → Fold story.
-- [ ] Charts use readable units, tooltips, consistent color semantics, and concise annotations.
-- [ ] The page handles data or analysis errors with a useful message rather than a traceback.
+- [x] The default page tells a complete Observe → Search → Fold story.
+- [x] Charts use readable units, tooltips, consistent color semantics, and concise annotations.
+- [x] The page handles data or analysis errors with a useful message rather than a traceback.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_app.py`
-- [ ] Run `uv run streamlit run app.py` and manually inspect desktop and narrow layouts.
+- [x] `uv run pytest tests/test_app.py`
+- [x] Run `uv run streamlit run app.py` and manually inspect desktop and narrow layouts.
 
 **Dependencies:** Task 4
 
@@ -221,7 +221,7 @@ candidate, and phase-folded transit without requiring visitor configuration.
 
 ### Checkpoint B: Analytical proof
 
-- [ ] Full test, lint, and type-check suite passes.
+- [x] Full test, lint, and type-check suite passes.
 - [ ] A fresh clone can reproduce the BLS result from bundled data.
 - [ ] A visitor can understand the target, candidate period, and folded transit in two minutes.
 - [ ] Human review before adding method comparisons.

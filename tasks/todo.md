@@ -19,11 +19,11 @@ only when its acceptance criteria and verification steps in the plan have passed
 
 - [x] Task 3: Implement the data contract and loader.
 - [x] Task 4: Reproduce the BLS result.
-- [ ] Task 5: Render the core recruiter-facing story.
+- [x] Task 5: Render the core recruiter-facing story.
 
 ### Checkpoint B: Analytical proof
 
-- [ ] Full test, lint, and type-check suite passes.
+- [x] Full test, lint, and type-check suite passes.
 - [ ] A fresh clone can reproduce the BLS result from bundled data.
 - [ ] A visitor can understand the target, candidate period, and folded transit in two minutes.
 - [ ] Human review before method comparisons.
