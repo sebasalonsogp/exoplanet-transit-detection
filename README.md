@@ -1,6 +1,6 @@
 # Exoplanet Transit Lab
 
-[![Quality checks](https://github.com/sebasalonsogp/exoplanet-transit-lab/actions/workflows/quality.yml/badge.svg)](https://github.com/sebasalonsogp/exoplanet-transit-lab/actions/workflows/quality.yml)
+[![Quality checks](https://github.com/sebasalonsogp/exoplanet-transit-detection/actions/workflows/quality.yml/badge.svg)](https://github.com/sebasalonsogp/exoplanet-transit-detection/actions/workflows/quality.yml)
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://exoplanet-transit-lab-nbwmcaxjydlejrmnvwzaug.streamlit.app/)
 
 An interactive dashboard for exploring a planetary transit signal in TESS observations.
@@ -37,8 +37,8 @@ The light curve comes from a public [MAST TESS target-pixel product](https://mas
 Requirements: [uv](https://docs.astral.sh/uv/getting-started/installation/) and Python 3.12.
 
 ```powershell
-git clone https://github.com/sebasalonsogp/exoplanet-transit-lab.git
-cd exoplanet-transit-lab
+git clone https://github.com/sebasalonsogp/exoplanet-transit-detection.git
+cd exoplanet-transit-detection
 uv sync --locked
 uv run streamlit run app.py
 ```
