@@ -1,10 +1,11 @@
-"""Plotly figures for the core Observe, Search, and Fold story."""
+"""Plotly figures for the Transit Lab analytical story."""
 
 import numpy as np
 import plotly.graph_objects as go
 from numpy.typing import NDArray
 
 from transit_lab.analysis import BLSResult
+from transit_lab.comparisons import MethodComparison
 from transit_lab.models import LightCurve
 
 SIGNAL_COLOR = "#22AFC6"
@@ -29,22 +30,80 @@ def _apply_layout(figure: go.Figure, *, hovermode: str = "closest") -> go.Figure
     return figure
 
 
-def build_light_curve_chart(curve: LightCurve) -> go.Figure:
-    """Plot the complete normalized TESS light curve."""
+def build_light_curve_chart(
+    curve: LightCurve,
+    *,
+    trace_name: str = "TESS observations",
+    y_axis_title: str = "Normalized flux",
+    hover_flux_label: str = "Normalized flux",
+    hover_flux_format: str = ".6f",
+) -> go.Figure:
+    """Plot a complete TESS light curve with explicit signal units."""
 
     figure = go.Figure(
         go.Scattergl(
             x=curve.time,
             y=curve.flux,
             mode="markers",
-            name="TESS observations",
+            name=trace_name,
             marker={"color": SIGNAL_COLOR, "size": 3, "opacity": 0.55},
-            hovertemplate="BTJD %{x:.4f}<br>Normalized flux %{y:.6f}<extra></extra>",
+            hovertemplate=(
+                f"BTJD %{{x:.4f}}<br>{hover_flux_label} "
+                f"%{{y:{hover_flux_format}}}<extra></extra>"
+            ),
         )
     )
     figure.update_xaxes(title="Time (BTJD)")
-    figure.update_yaxes(title="Normalized flux")
+    figure.update_yaxes(title=y_axis_title)
     return _apply_layout(figure)
+
+
+def build_method_comparison_chart(
+    comparison: MethodComparison,
+    reference_period_days: float,
+) -> go.Figure:
+    """Plot one method on the shared normalized period-score scale."""
+
+    candidate_index = int(np.argmax(comparison.score))
+    figure = go.Figure()
+    figure.add_trace(
+        go.Scatter(
+            x=comparison.period_days,
+            y=comparison.score,
+            mode="lines",
+            name=f"{comparison.label} score",
+            line={"color": SIGNAL_COLOR, "width": 1.8},
+            hovertemplate=(
+                "Trial period %{x:.5f} days<br>Normalized score %{y:.3f}<extra></extra>"
+            ),
+        )
+    )
+    figure.add_trace(
+        go.Scatter(
+            x=[comparison.candidate_period_days],
+            y=[comparison.score[candidate_index]],
+            mode="markers",
+            name="Strongest candidate",
+            marker={
+                "color": CANDIDATE_COLOR,
+                "size": 10,
+                "line": {"color": "#07111F", "width": 1},
+            },
+            hovertemplate=(
+                "Strongest candidate<br>Period %{x:.5f} days"
+                "<br>Normalized score %{y:.3f}<extra></extra>"
+            ),
+        )
+    )
+    figure.add_vline(
+        x=reference_period_days,
+        line={"color": MUTED_COLOR, "dash": "dot", "width": 1.5},
+        annotation_text="Archive period",
+        annotation_position="top right",
+    )
+    figure.update_xaxes(title="Trial period (days)")
+    figure.update_yaxes(title="Normalized method score", range=[0, 1.08])
+    return _apply_layout(figure, hovermode="x")
 
 
 def build_periodogram_chart(result: BLSResult, reference_period_days: float) -> go.Figure:
