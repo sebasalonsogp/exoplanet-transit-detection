@@ -12,7 +12,17 @@ blueColor = "#22AFC6"
 chartCategoricalColors = ["#22AFC6", "#F2B84B", "#7DD3A7", "#A8B8CC"]
 showWidgetBorder = true
 baseRadius = "small"
-font = "sans-serif"
+font = "'IBM Plex Sans':https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+headingFont = "'IBM Plex Serif':https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600&display=swap"
+codeFont = "'IBM Plex Mono':https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap"
+baseFontSize = 16
+baseFontWeight = 400
+metricValueFontSize = "1.75rem"
+metricValueFontWeight = 400
+headingFontSizes = ["2.75rem", "1.65rem", "1.2rem", "1rem", "0.875rem", "0.75rem"]
+headingFontWeights = [600, 600, 600, 500, 500, 500]
+codeFontSize = "0.875rem"
+codeFontWeight = 400
 
 [browser]
 gatherUsageStats = false
