@@ -20,7 +20,7 @@ Built with Python, Streamlit, Plotly, Astropy, NumPy, SciPy, and pandas.
 - View the raw, normalized, and detrended light curve.
 - Compare Fourier, SVD-assisted Fourier, and Box Least Squares results.
 - Explore and phase-fold the three strongest BLS candidates.
-- Run the complete analysis from bundled data without API keys or runtime downloads.
+- Run the complete analysis from bundled data without API keys or external data services.
 
 ## Result
 
